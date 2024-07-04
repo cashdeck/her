@@ -5,17 +5,23 @@ module Her
       # @private
       def parse_json(body = nil)
         body = '{}' if body.blank?
-        message = "Response from the API must behave like a Hash or an Array (last JSON response was #{body.inspect})"
 
         json = begin
-          MultiJson.load(body, :symbolize_keys => true)
-        rescue MultiJson::LoadError
-          raise Her::Errors::ParseError, message
+          JSON.parse(body, symbolize_names: true)
+        rescue JSON::ParserError
+          raise Her::Errors::ParseError, parse_json_error_message(body)
         end
 
-        raise Her::Errors::ParseError, message unless json.is_a?(Hash) || json.is_a?(Array)
+        raise Her::Errors::ParseError, parse_json_error_message(body) unless json.is_a?(Hash) || json.is_a?(Array)
 
         json
+      end
+
+      private 
+
+      # @private
+      def parse_json_error_message(body)
+        "Response from the API must behave like a Hash or an Array (last JSON response was #{body.inspect})"
       end
     end
   end

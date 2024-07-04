@@ -1,6 +1,6 @@
 class Array
 
   def to_json
-    MultiJson.dump(self)
+    JSON.dump(self)
   end
 end
