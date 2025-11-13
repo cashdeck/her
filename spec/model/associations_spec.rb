@@ -481,7 +481,8 @@ describe Her::Model::Associations do
       let(:new_user) { Foo::User.new }
 
       it "doesn't attempt to fetch association data" do
-        expect(new_user.comments).to eq([])
+        puts new_user.comments.object_id
+        expect(new_user.comments.size).to eq(0)
         expect(new_user.role).to be_nil
         expect(new_user.organization).to be_nil
       end
@@ -884,7 +885,8 @@ describe Her::Model::Associations do
         expect(comment.id).to eq(1)
         expect(comment.body).to eq("Hello!")
         expect(comment.user_id).to eq(10)
-        expect(user.comments).to eq([comment])
+        expect(user.comments.size).to eq(1)
+        expect(user.comments.first).to eq(comment)
       end
     end
 

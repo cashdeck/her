@@ -258,7 +258,7 @@ Also, you can define your own parsing method using a response middleware. The mi
 #       "errors": []
 #     }
 #
-class MyCustomParser < Faraday::Response::Middleware
+class MyCustomParser < Faraday::Middleware
   def on_complete(env)
     json = MultiJson.load(env[:body], symbolize_keys: true)
     env[:body] = {
